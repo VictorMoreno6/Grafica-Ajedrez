@@ -129,6 +129,47 @@ public class Juego {
         }
     }
 
+    public void graficamovimientoJugada(int filainicial,int columnainicial,int filafinal,int columnafinal, Tablero tablero) {
+        if (tablero.hayPieza(filainicial, columnainicial)) {
+            Pieza x = tablero.devuelvePieza(filainicial, columnainicial);
+            if (x.getColor().equalsIgnoreCase(elTurno)) {
+                Movimiento mov = new Movimiento(new Posicion(filainicial, columnainicial), new Posicion(filafinal, columnafinal));
+                if (x.validoMovimiento(mov, tablero) && !tablero.provocaJaque(x,filafinal,columnafinal,filainicial,columnainicial) || tablero.enroque(mov,x,this) && !tablero.provocaJaque(x,filafinal,columnafinal,filainicial,columnainicial)) {
+                    if ((elTurno.equalsIgnoreCase("negro")) && !(tablero.jaqueNegro()) || (elTurno.equalsIgnoreCase("blanco") && !tablero.jaqueBlanco())){
+                        if (tablero.hayPieza(filafinal, columnafinal)) {
+                            Pieza y = tablero.devuelvePieza(filafinal, columnafinal);
+                            if (y.getColor() == x.getColor() && !tablero.enroque(mov,x,this)) {
+                                System.out.println(Constantes.NO_VAYAS_EN_TU_CONTRA_COMETE_LAS_PIEZAS_RIVALES);
+                            } else {
+                                tablero.mover(mov, x, Juego.this);
+                            }
+                        } else {
+                            tablero.mover(mov, x, Juego.this);
+                        }
+                    } else if (tablero.evitaJaque(x,filafinal,columnafinal,filainicial,columnainicial)){
+                        if (tablero.hayPieza(filafinal, columnafinal)) {
+                            Pieza y = tablero.devuelvePieza(filafinal, columnafinal);
+                            if (y.getColor() == x.getColor()) {
+                                System.out.println(Constantes.NO_VAYAS_EN_TU_CONTRA_COMETE_LAS_PIEZAS_RIVALES);
+                            } else {
+                                tablero.mover(filainicial, filafinal, columnainicial, columnafinal, x, Juego.this);
+                            }
+                        } else {
+                            tablero.mover(filainicial, filafinal, columnainicial, columnafinal, x, Juego.this);
+                        }
+                    } else {
+                        System.out.println(Constantes.ESTAS_EN_JAQUE_NO_PUEDES_REALIZAR_ESTE_MOVIMIENTO);
+                    }
+                } else {
+                    System.out.println(Constantes.MOVIMIENTO_INVALIDO);
+                }
+            } else {
+                System.out.println(Constantes.NO_TE_PRECIPITES_ESPERA_TU_TURNO);
+            }
+        } else {
+            System.out.println(Constantes.MOVIMIENTO_NO_VALIDO);
+        }
+    }
     /**
      * Método que devuelve un String indicando de quien es el turno.
      *

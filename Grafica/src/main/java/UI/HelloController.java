@@ -1,5 +1,7 @@
 package UI;
 
+import Modelo.*;
+import common.Constantes;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -23,6 +25,10 @@ public class HelloController implements Initializable {
 
     private Tablero tablero;
 
+    private Posicion posOrigen;
+
+    private Posicion posFinal;
+
     private Juego juego;
 
     @FXML
@@ -31,38 +37,83 @@ public class HelloController implements Initializable {
     }
 
     public void click(MouseEvent mouseEvent) {
-        int columnaini = 0;
-        int filaini = 0;
-        int columnafinal = 0;
-        int filafinal = 0;
+        int columna = 0;
+        int fila = 0;
         Node node = (Node) mouseEvent.getTarget();
         if (node != null && node.getBoundsInParent().contains(mouseEvent.getSceneX(), mouseEvent.getSceneY())) {
-            columnaini = GridPane.getColumnIndex(node);
-            filaini = GridPane.getRowIndex(node);
-            //System.out.println("Row : " + fila + ", Col : " + columna);
-        }
-        if (tablero.hayPieza(filaini,columnaini)){
-            Node node2 = (Node) mouseEvent.getTarget();
-            if (node2 != null && node2.getBoundsInParent().contains(mouseEvent.getSceneX(), mouseEvent.getSceneY())) {
-                columnaini = GridPane.getColumnIndex(node2);
-                filaini = GridPane.getRowIndex(node2);
-                //System.out.println("Row : " + fila + ", Col : " + columna);
+            columna = GridPane.getColumnIndex(node);
+            fila = GridPane.getRowIndex(node);
+
+            if (posOrigen == null) {
+                posOrigen = new Posicion(fila, columna);
+                System.out.println("Rowi : " + posOrigen + ", Col : " + columna);
+
+            } else if (posFinal == null && posOrigen != null) {
+                posFinal = new Posicion(fila, columna);System.out.println("Rowf : " + posFinal + ", Col : " + columna);
+                Pieza x = tablero.devuelvePieza(posOrigen);
+                if (graficamovimientoJugada(posOrigen.getFila(), posOrigen.getColumna(), posFinal.getFila(), posFinal.getColumna(),tablero))
+                    tablero.movergrafica(posOrigen.getFila(), posOrigen.getColumna(), posFinal.getFila(), posFinal.getColumna(), x);
+                pintarTablero();
+                juego.setElTurno();
+                posOrigen = null;
+                posFinal = null;
+
             }
-            Pieza x=
-            juego.movimientoJugada();
         }
+    }
 
-
+    public boolean graficamovimientoJugada(int filainicial, int columnainicial, int filafinal, int columnafinal, Tablero tablero) {
+        boolean movimiento = false;
+        if (tablero.hayPieza(filainicial, columnainicial)) {
+            Pieza x = tablero.devuelvePieza(filainicial, columnainicial);
+            if (x.getColor().equalsIgnoreCase(juego.getElTurno())) {
+                Movimiento mov = new Movimiento(new Posicion(filainicial, columnainicial), new Posicion(filafinal, columnafinal));
+                if (x.validoMovimiento(mov, tablero) && !tablero.provocaJaque(x, filafinal, columnafinal, filainicial, columnainicial) || tablero.enroque(mov, x, juego) && !tablero.provocaJaque(x, filafinal, columnafinal, filainicial, columnainicial)) {
+                    if ((juego.getElTurno().equalsIgnoreCase("negro")) && !(tablero.jaqueNegro()) || (juego.getElTurno().equalsIgnoreCase("blanco") && !tablero.jaqueBlanco())) {
+                        if (tablero.hayPieza(filafinal, columnafinal)) {
+                            Pieza y = tablero.devuelvePieza(filafinal, columnafinal);
+                            if (y.getColor() == x.getColor() && !tablero.enroque(mov, x, juego)) {
+                                System.out.println(Constantes.NO_VAYAS_EN_TU_CONTRA_COMETE_LAS_PIEZAS_RIVALES);
+                            } else {
+                                movimiento = true;
+                            }
+                        } else {
+                            movimiento = true;
+                        }
+                    } else if (tablero.evitaJaque(x, filafinal, columnafinal, filainicial, columnainicial)) {
+                        if (tablero.hayPieza(filafinal, columnafinal)) {
+                            Pieza y = tablero.devuelvePieza(filafinal, columnafinal);
+                            if (y.getColor() == x.getColor()) {
+                                System.out.println(Constantes.NO_VAYAS_EN_TU_CONTRA_COMETE_LAS_PIEZAS_RIVALES);
+                            } else {
+                                movimiento = true;
+                            }
+                        } else {
+                            movimiento = true;
+                        }
+                    } else {
+                        System.out.println(Constantes.ESTAS_EN_JAQUE_NO_PUEDES_REALIZAR_ESTE_MOVIMIENTO);
+                    }
+                } else {
+                    System.out.println(Constantes.MOVIMIENTO_INVALIDO);
+                }
+            } else {
+                System.out.println(Constantes.NO_TE_PRECIPITES_ESPERA_TU_TURNO);
+            }
+        } else {
+            System.out.println(Constantes.MOVIMIENTO_NO_VALIDO);
+        }
+        return movimiento;
     }
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        juego=new Juego("blanco");
-        tablero=new Tablero();
+        juego = new Juego("blanco");
+        tablero = new Tablero();
         pintarTablero();
     }
 
-    public void pintarTablero(){
+    public void pintarTablero() {
         Pane pane;
         for (int i = 0; i <= 7; i++) {
             for (int j = 0; j <= 7; j++) {
@@ -72,9 +123,9 @@ public class HelloController implements Initializable {
                 } else {
                     pane.setStyle("-fx-background-color: #ffe68e");
                 }
-                if (tablero.hayPieza(i,j)) {
+                if (tablero.hayPieza(i, j)) {
                     //addAll vs add
-                    pane.getChildren().addAll(new ImageView(tablero.devuelvePieza(i,j).toImage()));
+                    pane.getChildren().addAll(new ImageView(tablero.devuelvePieza(i, j).toImage()));
                 }
                 mainGrid.add(pane, j, i);
             }

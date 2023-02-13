@@ -367,6 +367,25 @@ public class Tablero {
         elTurno.setElTurno();
     }
 
+    public void vmover(int filainicial, int filafinal, int columnainicial, int columnafinal, Pieza x, Juego elTurno) {
+        Movimiento mov=new Movimiento(filainicial, columnainicial,filafinal,columnafinal);
+        if (!enroque(mov,x,elTurno)){
+            movergrafica(filainicial,filafinal,columnainicial,columnafinal, x);
+            if ((x.getClass().getSimpleName().equalsIgnoreCase("Peon") && x.getColor().equalsIgnoreCase("blanco") && filafinal == 0) || (x.getClass().getSimpleName().equalsIgnoreCase("Peon") && x.getColor().equalsIgnoreCase("negro") && filafinal == 7)) {
+                promocionarPeon(filafinal, columnafinal);
+            }
+            x.setNumMovimientos();
+        } else if (enroque(mov,x,elTurno)) {
+            moverEnroque(mov,x);
+        }
+        pintarTablero();
+        elTurno.setElTurno();
+    }
+    public void movergrafica(int filainicial, int columnainicial, int filafinal, int columnafinal, Pieza x) {
+            ponPieza(x, filafinal, columnafinal);
+            quitaPieza(filainicial, columnainicial);
+    }
+
     /**
      * Método que realiza la promoción del peón y cam,bia este por la pieza que el usuario quiera.
      *
