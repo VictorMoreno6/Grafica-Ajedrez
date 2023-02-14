@@ -35,9 +35,8 @@ public class Rey extends Pieza {
     @Override
     boolean validoMovimiento(Movimiento mov, Tablero tablero) {
         boolean respuesta = false;
-        if (Math.abs(mov.getPosInicial().getFila() - mov.getPosFinal().getFila()) <= 1 && Math.abs(mov.getPosInicial().getColumna() - mov.getPosFinal().getColumna()) <= 1 && !tablero.hayPieza(mov.getPosFinal())) {
+        if (Math.abs(mov.getPosInicial().getFila() - mov.getPosFinal().getFila()) <= 1 && Math.abs(mov.getPosInicial().getColumna() - mov.getPosFinal().getColumna()) <= 1 )
             respuesta = true;
-        }
         return respuesta;
     }
 

@@ -1,18 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.geometry.Insets?>
-<?import javafx.scene.control.Label?>
-<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
 
-<?import javafx.scene.control.Button?>
-<?import javafx.scene.layout.Pane?>
-<?import javafx.scene.layout.GridPane?>
-<?import javafx.scene.layout.ColumnConstraints?>
-<?import javafx.scene.layout.RowConstraints?>
-<?import javafx.scene.text.Font?>
-
-<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600" prefWidth="510.0" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1"
-fx:controller="UI.HelloController">
+<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600" prefWidth="510.0" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="UI.HelloController">
    <children>
       <GridPane fx:id="mainGrid" alignment="CENTER" onMouseClicked="#click" prefHeight="510.0" prefWidth="510.0">
         <columnConstraints>
@@ -36,11 +28,12 @@ fx:controller="UI.HelloController">
             <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
         </rowConstraints>
       </GridPane>
-       <Label fx:id="label" layoutX="8.0" layoutY="552.0" text="Bienvenido" >
+       <Label fx:id="label" layoutX="8.0" layoutY="552.0" text="Hola">
            <font>
-               <Font size="24.0"/>
+               <Font size="24.0" />
            </font>
        </Label>
+       <Button layoutX="220.0" layoutY="250.0" onAction="#alertaPromocion" text="Promoción" visible="false" />
        <Button fx:id="boton" layoutX="435.0" layoutY="557.0" mnemonicParsing="false" onAction="#enroque" text="Enroque" visible="false" />
    </children>
 </Pane>

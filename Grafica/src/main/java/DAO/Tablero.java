@@ -1,5 +1,6 @@
 package DAO;
 
+import UI.HelloController;
 import common.Constantes;
 import Modelo.*;
 
@@ -303,7 +304,6 @@ public class Tablero {
                 hayjaque=true;
             } else if (x.getColor().equalsIgnoreCase("negro") && !jaqueNegro()) {
                 hayjaque=true;
-                pintarTablero();
             }
         }
         quitaPieza(filafinal,columnafinal);
@@ -351,13 +351,15 @@ public class Tablero {
      * @param x
      * @param elTurno
      */
-    public void mover(int filainicial, int filafinal, int columnainicial, int columnafinal, Pieza x, Juego elTurno) {
+    public boolean mover(int filainicial, int columnainicial, int filafinal, int columnafinal, Pieza x, Juego elTurno) {
+        boolean promo=false;
         Movimiento mov=new Movimiento(filainicial, columnainicial,filafinal,columnafinal);
         if (!enroque(mov,x,elTurno)){
             ponPieza(x, filafinal, columnafinal);
             quitaPieza(filainicial, columnainicial);
             if ((x.getClass().getSimpleName().equalsIgnoreCase("Peon") && x.getColor().equalsIgnoreCase("blanco") && filafinal == 0) || (x.getClass().getSimpleName().equalsIgnoreCase("Peon") && x.getColor().equalsIgnoreCase("negro") && filafinal == 7)) {
-                promocionarPeon(filafinal, columnafinal);
+                if (promocion(filafinal,x))
+                    promo=true;
             }
             x.setNumMovimientos();
         } else if (enroque(mov,x,elTurno)) {
@@ -365,14 +367,15 @@ public class Tablero {
         }
         pintarTablero();
         elTurno.setElTurno();
+        return  promo;
     }
 
-    public void vmover(int filainicial, int filafinal, int columnainicial, int columnafinal, Pieza x, Juego elTurno) {
+    /*public void vmover(int filainicial, int filafinal, int columnainicial, int columnafinal, Pieza x, Juego elTurno) {
         Movimiento mov=new Movimiento(filainicial, columnainicial,filafinal,columnafinal);
         if (!enroque(mov,x,elTurno)){
             movergrafica(filainicial,filafinal,columnainicial,columnafinal, x);
             if ((x.getClass().getSimpleName().equalsIgnoreCase("Peon") && x.getColor().equalsIgnoreCase("blanco") && filafinal == 0) || (x.getClass().getSimpleName().equalsIgnoreCase("Peon") && x.getColor().equalsIgnoreCase("negro") && filafinal == 7)) {
-                promocionarPeon(filafinal, columnafinal);
+                promocionarPeon(filafinal, columnafinal, );
             }
             x.setNumMovimientos();
         } else if (enroque(mov,x,elTurno)) {
@@ -380,10 +383,18 @@ public class Tablero {
         }
         pintarTablero();
         elTurno.setElTurno();
-    }
+    }*/
     public void movergrafica(int filainicial, int columnainicial, int filafinal, int columnafinal, Pieza x) {
             ponPieza(x, filafinal, columnafinal);
             quitaPieza(filainicial, columnainicial);
+    }
+
+    public boolean promocion( int filafinal, Pieza x){
+        boolean promocion=false;
+        if ((x.getClass().getSimpleName().equalsIgnoreCase("Peon") && x.getColor().equalsIgnoreCase("blanco") && filafinal == 0) || (x.getClass().getSimpleName().equalsIgnoreCase("Peon") && x.getColor().equalsIgnoreCase("negro") && filafinal == 7)) {
+            promocion = true;
+        }
+        return promocion;
     }
 
     /**
@@ -392,34 +403,21 @@ public class Tablero {
      * @param filafinal
      * @param columnafinal
      */
-    public void promocionarPeon(int filafinal, int columnafinal) {
-        Scanner sc = new Scanner(System.in);
-        for (boolean hecho = false; !hecho; ) {
-            int opcion;
-            System.out.println(Constantes.ELIJE_LA_PIEZA_QUE_DESEAS_PROMOCIONAR);
-            System.out.println(Constantes.REINA_2_CABALLO_3_TORRE_4_ALFIL);
-            opcion = sc.nextInt();
+    public void promocionarPeon(int filafinal, int columnafinal, int opcion) {
             switch (opcion) {
                 case 1:
                     ponPieza(new Reina("blanco"), filafinal, columnafinal);
-                    hecho = true;
                     break;
                 case 2:
                     ponPieza(new Caballo("blanco"), filafinal, columnafinal);
-                    hecho = true;
                     break;
                 case 3:
-                    ponPieza(new Torre("blanco"), filafinal, columnafinal);
-                    hecho = true;
+                    ponPieza(new Alfil("blanco"), filafinal, columnafinal);
                     break;
                 case 4:
-                    ponPieza(new Alfil("blanco"), filafinal, columnafinal);
-                    hecho = true;
+                    ponPieza(new Torre("blanco"), filafinal, columnafinal);
                     break;
-                default:
-                    System.out.println(Constantes.INTRODUZCA_UN_NUMERO_CORRECTO);
             }
-        }
     }
     public boolean enroque(Movimiento mov,Pieza x,Juego elTurno){
         boolean enroque=false;
@@ -523,7 +521,12 @@ public class Tablero {
                                 for (int l = 0; l < 8; l++) {
                                     Movimiento mov= new Movimiento(i,j,k,l);
                                     if (evitaJaque(x,k,l,i,j) && x.validoMovimiento(mov,this))
-                                        fin=false;
+                                        if (!x.getClass().getSimpleName().equalsIgnoreCase("Rey"))
+                                            fin=false;
+                                        else if (x.getClass().getSimpleName().equalsIgnoreCase("Rey") && hayPieza(k,l) ) {
+                                            if (devuelvePieza(k,l).getColor().equalsIgnoreCase("negro"))
+                                                fin=false;
+                                        }
                                 }
                             }
                         }
