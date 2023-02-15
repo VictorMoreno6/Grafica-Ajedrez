@@ -36,6 +36,8 @@ public class Peon extends Pieza {
                 respuesta = true;
             } else if (mov.esDiagonal() && tablero.hayPieza(mov.getPosFinal()) && mov.saltoVertical() == 1 && Math.abs(mov.saltoHorizontal()) == 1 && color.equalsIgnoreCase("blanco")) {
                 respuesta = true;
+            } else if (tablero.enPasant(mov, tablero.devuelvePieza(mov.getPosInicial()))) {
+                respuesta=true;
             }
         }
         return respuesta;

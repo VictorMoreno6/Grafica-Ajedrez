@@ -26,6 +26,8 @@ public class HelloController implements Initializable {
     @FXML
     private GridPane mainGrid;
 
+    @FXML
+    private Label label2;
     private boolean fin;
 
     private Tablero tablero;
@@ -43,6 +45,11 @@ public class HelloController implements Initializable {
 
     public void click(MouseEvent mouseEvent) throws InterruptedException {
         if (!fin) {
+            if (juego.getElTurno().equalsIgnoreCase("blanco"))
+                label2.setText(Constantes.ES_EL_TURNO_DE_LAS_BLANCAS);
+            if (juego.getElTurno().equalsIgnoreCase("negro"))
+                label2.setText(Constantes.ES_EL_TURNO_DE_LAS_NEGRAS);
+            System.out.println("Es el turno de las blancas");
             int columna = 0;
             int fila = 0;
             Node node = null;
@@ -63,7 +70,6 @@ public class HelloController implements Initializable {
                 Pieza x = tablero.devuelvePieza(posOrigen);
                 if (graficamovimientoJugada(posOrigen.getFila(), posOrigen.getColumna(), posFinal.getFila(), posFinal.getColumna(), tablero)) {
                     if (tablero.mover(posOrigen.getFila(), posOrigen.getColumna(), posFinal.getFila(), posFinal.getColumna(), x, juego)) {
-                        System.out.println("promocionando");
                         int opcion = alertaPromocion();
                         tablero.promocionarPeon(posFinal.getFila(), posFinal.getColumna(), opcion);
                     }
@@ -76,7 +82,7 @@ public class HelloController implements Initializable {
         if (tablero.finJuego()) {
             fin = true;
             if (tablero.finJuego()) {
-                label.setText(Constantes.JAQUE_MATE_CON_TOMATE);
+                label2.setText(Constantes.JAQUE_MATE_CON_TOMATE);
                 if (juego.getElTurno().equalsIgnoreCase("blanco")) {
                     label.setText(Constantes.LAS_PIEZAS_NEGRAS_HAN_GANADO);
                 } else {

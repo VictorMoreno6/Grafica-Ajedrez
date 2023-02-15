@@ -354,16 +354,16 @@ public class Tablero {
     public boolean mover(int filainicial, int columnainicial, int filafinal, int columnafinal, Pieza x, Juego elTurno) {
         boolean promo=false;
         Movimiento mov=new Movimiento(filainicial, columnainicial,filafinal,columnafinal);
-        if (!enroque(mov,x,elTurno)){
+        if (!enroque(mov,x,elTurno) && !enPasant(mov,x)){
             ponPieza(x, filafinal, columnafinal);
             quitaPieza(filainicial, columnainicial);
-            if ((x.getClass().getSimpleName().equalsIgnoreCase("Peon") && x.getColor().equalsIgnoreCase("blanco") && filafinal == 0) || (x.getClass().getSimpleName().equalsIgnoreCase("Peon") && x.getColor().equalsIgnoreCase("negro") && filafinal == 7)) {
-                if (promocion(filafinal,x))
-                    promo=true;
-            }
+            if (promocion(filafinal,x))
+                promo=true;
             x.setNumMovimientos();
         } else if (enroque(mov,x,elTurno)) {
             moverEnroque(mov,x);
+        } else if (enPasant(mov,x)) {
+            menPasant(mov,x);
         }
         pintarTablero();
         elTurno.setElTurno();
@@ -395,6 +395,25 @@ public class Tablero {
             promocion = true;
         }
         return promocion;
+    }
+
+    public boolean enPasant(Movimiento mov, Pieza x){
+        boolean hay=false;
+        if (x.getClass().getSimpleName().equalsIgnoreCase("Peon") && mov.esDiagonal())
+            if (x.getColor().equalsIgnoreCase("blanco") && mov.saltoVertical()==1 && mov.getPosInicial().getFila()==3 || x.getColor().equalsIgnoreCase("negro") && mov.saltoVertical()==-1 && mov.getPosInicial().getFila()==4){
+                Pieza y=devuelvePieza(mov.getPosInicial().getFila(),mov.getPosFinal().getColumna());
+                if (y!=null && y.getClass().getSimpleName().equalsIgnoreCase("Peon") && y.getNumMovimientos()==1){
+                    hay=true;
+                }
+            }
+        return hay;
+    }
+
+    public void menPasant(Movimiento mov, Pieza x){
+        ponPieza(x,mov.getPosFinal());
+        quitaPieza(mov.getPosInicial());
+        quitaPieza(mov.getPosInicial().getFila(),mov.getPosFinal().getColumna());
+        x.setNumMovimientos();
     }
 
     /**

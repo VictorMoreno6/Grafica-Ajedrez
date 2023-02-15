@@ -28,7 +28,12 @@
             <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
         </rowConstraints>
       </GridPane>
-       <Label fx:id="label" layoutX="8.0" layoutY="552.0" text="Hola">
+       <Label fx:id="label" layoutX="8.0" layoutY="552.0" text="Jugador">
+           <font>
+               <Font size="24.0" />
+           </font>
+       </Label>
+       <Label fx:id="label2" layoutX="8.0" layoutY="522.0" text="Hola">
            <font>
                <Font size="24.0" />
            </font>
