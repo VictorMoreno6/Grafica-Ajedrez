@@ -13,7 +13,7 @@ public class Constantes {
     public static final String INTRODUCE_EL_MOVIMIENTO_QUE_QUIERES_REALIZAR = "Introduce el movimiento que quieres realizar";
     public static final String LAS_PIEZAS_NEGRAS_HAN_GANADO = "Las piezas negras han ganado";
     public static final String LAS_PIEZAS_BLANCAS_HAN_GANADO = "Las piezas blancas han ganado";
-    public static final String ESTAS_EN_JAQUE_NO_PUEDES_REALIZAR_ESTE_MOVIMIENTO = "Estas en jaque, no puedes realizar este movimiento";
+    public static final String ESTAS_EN_JAQUE_NO_PUEDES_REALIZAR_ESTE_MOVIMIENTO = "Estas en jaque, evitalo";
     public static final String JAQUE_MATE_CON_TOMATE = "Jaque Mate con Tomate.";
     public static final String ESTAS_EN_JAQUE = "Estas en Jaque";
     public static final String TABLAS_POR_REY_AHOGADO = "Tablas por rey ahogado";

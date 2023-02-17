@@ -7,9 +7,9 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.control.Alert;
+import javafx.scene.control.Button;
 import javafx.scene.control.ChoiceDialog;
 import javafx.scene.control.Label;
-import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.GridPane;
@@ -18,14 +18,15 @@ import DAO.*;
 
 import java.net.URL;
 import java.util.ResourceBundle;
-import java.util.Scanner;
+
+
+
 
 public class HelloController implements Initializable {
     @FXML
     private Label label;
     @FXML
     private GridPane mainGrid;
-
     @FXML
     private Label label2;
     private boolean fin;
@@ -96,33 +97,6 @@ public class HelloController implements Initializable {
         }
     }
 
-    /* int columna = 0;
-     int fila = 0;
-     Node node = (Node) mouseEvent.getTarget();
-             if (node != null && node.getBoundsInParent().contains(mouseEvent.getSceneX(), mouseEvent.getSceneY())) {
-         columna = GridPane.getColumnIndex(node);
-         fila = GridPane.getRowIndex(node);
-
-         if (posOrigen == null) {
-             posOrigen = new Posicion(fila, columna);
-             System.out.println("Rowi : " + posOrigen + ", Col : " + columna);
-
-         } else if (posFinal == null && posOrigen != null) {
-             posFinal = new Posicion(fila, columna);
-             System.out.println("Rowf : " + posFinal + ", Col : " + columna);
-             Pieza x = tablero.devuelvePieza(posOrigen);
-             if (graficamovimientoJugada(posOrigen.getFila(), posOrigen.getColumna(), posFinal.getFila(), posFinal.getColumna(), tablero)) {
-                 if (tablero.mover(posOrigen.getFila(), posOrigen.getColumna(), posFinal.getFila(), posFinal.getColumna(), x, juego)) {
-                     System.out.println("promocionando");
-                     int opcion = alertaPromocion();
-                     tablero.promocionarPeon(posFinal.getFila(), posFinal.getColumna(), opcion);
-                 }
-             }
-             pintarTablero();
-             posOrigen = null;
-             posFinal = null;
-         }
-     }*/
     public int alertaPromocion() {
         int opcion = 0;
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
@@ -131,15 +105,6 @@ public class HelloController implements Initializable {
         alert.setContentText("Elija la pieza por la que desee sustituir su peon");
 
         ChoiceDialog<String> choiceDialog = new ChoiceDialog<String>("Pieza Nueva");
-        /* //Opción 1
-        //Retrieving the observable list
-        ObservableList<String> list = choiceDialog.getItems();
-        //Adding items to the list
-        list.add("Reina");
-        list.add("Caballo");
-        list.add("Alfil");
-        list.add("Torre");*/
-        //Opción 2
         choiceDialog.getItems().addAll("Reina", "Caballo", "Alfil", "Torre");
         choiceDialog.showAndWait();
 
@@ -207,13 +172,6 @@ public class HelloController implements Initializable {
         return movimiento;
     }
 
-    @Override
-    public void initialize(URL url, ResourceBundle resourceBundle) {
-        juego = new Juego("blanco");
-        tablero = new Tablero();
-        fin = false;
-        pintarTablero();
-    }
 
     public void pintarTablero() {
         Pane pane;
@@ -232,6 +190,13 @@ public class HelloController implements Initializable {
                 mainGrid.add(pane, j, i);
             }
         }
+    }
+    @Override
+    public void initialize(URL url, ResourceBundle resourceBundle) {
+        juego = new Juego("blanco");
+        tablero = new Tablero();
+        fin = false;
+        pintarTablero();
     }
 
     public void enroque(ActionEvent actionEvent) {

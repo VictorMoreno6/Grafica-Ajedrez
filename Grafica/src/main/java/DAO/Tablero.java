@@ -3,6 +3,7 @@ package DAO;
 import UI.HelloController;
 import common.Constantes;
 import Modelo.*;
+import javafx.scene.layout.StackPane;
 
 import java.util.Scanner;
 
@@ -25,18 +26,14 @@ public class Tablero {
         for (int i = 0; i < 8; i++) {
             tablero[1][i] = new Peon("negro");
         }
-        /*tablero[1][4] = new Peon("negro");
-        tablero[1][6] = new Peon("negro");
-        tablero[2][5] = new Peon("negro");
-        tablero[3][7] = new Peon("negro");
-        tablero[2][7] = new Torre("negro");
-        tablero[0][5] = new Alfil("negro");
-        tablero[0][6] = new Caballo("negro");
-        tablero[2][6] = new Rey("negro");
-        tablero[0][7] = new Torre("negro");
-        tablero[1][7] = new Reina("negro");
-        tablero[4][7] = new Peon("blanco");
-        tablero[0][2] = new Reina("blanco");*/
+        for (int i = 0; i < 65; i++) {
+            StackPane a = new StackPane();
+        }
+
+        StackPane row0Col1 = new StackPane();
+        StackPane row0Col2 = new StackPane();
+        StackPane row0Col3 = new StackPane();
+
 
         tablero[7][0] = new Torre("blanco");
         tablero[7][1] = new Caballo("blanco");
@@ -469,6 +466,10 @@ public class Tablero {
                 ponPieza(y,7,3);
             }
         }
+        /*if (jaqueBlanco() || jaqueNegro()){
+            ponPieza(x,mov.getPosInicial());
+            ponPieza(x,mov.getPosFinal());
+        }*/
         x.setNumMovimientos();
         y.setNumMovimientos();
         quitaPieza(mov.getPosInicial());
