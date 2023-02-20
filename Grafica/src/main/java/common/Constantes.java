@@ -17,4 +17,7 @@ public class Constantes {
     public static final String JAQUE_MATE_CON_TOMATE = "Jaque Mate con Tomate.";
     public static final String ESTAS_EN_JAQUE = "Estas en Jaque";
     public static final String TABLAS_POR_REY_AHOGADO = "Tablas por rey ahogado";
+    public static final String PROMOCIÓN_DEL_PEÓN = "Promoción del peón";
+    public static final String QUE_PIEZA_DESEA = "¿Que pieza desea?";
+    public static final String ELIJA_LA_PIEZA_POR_LA_QUE_DESEE_SUSTITUIR_SU_PEON = "Elija la pieza por la que desee sustituir su peon";
 }

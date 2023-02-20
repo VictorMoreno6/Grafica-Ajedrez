@@ -362,7 +362,6 @@ public class Tablero {
         } else if (enPasant(mov,x)) {
             menPasant(mov,x);
         }
-        pintarTablero();
         elTurno.setElTurno();
         return  promo;
     }

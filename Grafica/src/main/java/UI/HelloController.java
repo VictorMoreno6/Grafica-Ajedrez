@@ -7,7 +7,6 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.control.Alert;
-import javafx.scene.control.Button;
 import javafx.scene.control.ChoiceDialog;
 import javafx.scene.control.Label;
 import javafx.scene.image.ImageView;
@@ -39,18 +38,12 @@ public class HelloController implements Initializable {
 
     private Juego juego;
 
-    @FXML
-    protected void onHelloButtonClick() {
-        label.setText("Welcome to JavaFX Application!");
-    }
-
     public void click(MouseEvent mouseEvent) throws InterruptedException {
         if (!fin) {
             if (juego.getElTurno().equalsIgnoreCase("blanco"))
                 label2.setText(Constantes.ES_EL_TURNO_DE_LAS_BLANCAS);
             if (juego.getElTurno().equalsIgnoreCase("negro"))
                 label2.setText(Constantes.ES_EL_TURNO_DE_LAS_NEGRAS);
-            System.out.println("Es el turno de las blancas");
             int columna = 0;
             int fila = 0;
             Node node = null;
@@ -63,11 +56,8 @@ public class HelloController implements Initializable {
             }
             if (posOrigen == null) {
                 posOrigen = new Posicion(fila, columna);
-                System.out.println("Rowi : " + posOrigen + ", Col : " + columna);
-
             } else if (posFinal == null && posOrigen != null) {
                 posFinal = new Posicion(fila, columna);
-                System.out.println("Rowf : " + posFinal + ", Col : " + columna);
                 Pieza x = tablero.devuelvePieza(posOrigen);
                 if (graficamovimientoJugada(posOrigen.getFila(), posOrigen.getColumna(), posFinal.getFila(), posFinal.getColumna(), tablero)) {
                     if (tablero.mover(posOrigen.getFila(), posOrigen.getColumna(), posFinal.getFila(), posFinal.getColumna(), x, juego)) {
@@ -100,9 +90,9 @@ public class HelloController implements Initializable {
     public int alertaPromocion() {
         int opcion = 0;
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
-        alert.setTitle("Promoción del peón");
-        alert.setHeaderText("¿Que pieza desea?");
-        alert.setContentText("Elija la pieza por la que desee sustituir su peon");
+        alert.setTitle(Constantes.PROMOCIÓN_DEL_PEÓN);
+        alert.setHeaderText(Constantes.QUE_PIEZA_DESEA);
+        alert.setContentText(Constantes.ELIJA_LA_PIEZA_POR_LA_QUE_DESEE_SUSTITUIR_SU_PEON);
 
         ChoiceDialog<String> choiceDialog = new ChoiceDialog<String>("Pieza Nueva");
         choiceDialog.getItems().addAll("Reina", "Caballo", "Alfil", "Torre");
@@ -111,11 +101,9 @@ public class HelloController implements Initializable {
 
         switch (choiceDialog.getSelectedItem()) {
             case "Reina":
-                System.out.println("Reina");
                 opcion = 1;
                 break;
             case "Caballo":
-                System.out.println("Caballo");
                 opcion = 2;
                 break;
             case "Alfil":
@@ -179,9 +167,9 @@ public class HelloController implements Initializable {
             for (int j = 0; j <= 7; j++) {
                 pane = new Pane();
                 if (j % 2 == 0 && i % 2 == 0 || j % 2 != 0 && i % 2 != 0) {
-                    pane.setStyle("-fx-background-color: #ffe68e;");
+                    pane.setStyle("-fx-background-color: #ffffff;");
                 } else {
-                    pane.setStyle("-fx-background-color: #684714");
+                    pane.setStyle("-fx-background-color: #3a3736");
                 }
                 if (tablero.hayPieza(i, j)) {
                     //addAll vs add
